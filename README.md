@@ -1,6 +1,6 @@
 # crowdsourcing-text-msg
 
-#How to start
+#How to start (Part A)
 
 - Clone this repository by running the following command (copy and paste the command to your Terminal)
 ```bash
@@ -19,6 +19,14 @@ https://docs.python.org/3.6/library/venv.html
 - Install all the python dependency package by run the following command:
 ```.bash
 pip3 install -r requirements.txt
+```
+
+# How to start (Part B)
+
+- If this is your first time to use this repository, we need to install our SQLite and create the necessary table. 
+```bash
+# please adjust your path if you are on Windows OS. 
+python src/database_setup.py
 ```
 
 ##Note: We will use the dev branch as a development branch.
