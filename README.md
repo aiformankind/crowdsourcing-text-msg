@@ -2,13 +2,13 @@
 
 ###How to start
 
-- Clone this repository by running the following command
+- Clone this repository by running the following command (copy and paste the command to your Terminal)
 ```bash
-git clone https://github.com/aiformankind/crowdsourcing-text-msg.git && cd crowdsourcing-text-msg
+git clone https://github.com/aiformankind/crowdsourcing-text-msg.git && git checkout dev && cd crowdsourcing-text-msg
 ```
 or
 ```bash
-git clone git@github.com:aiformankind/crowdsourcing-text-msg.git && cd crowdsourcing-text-msg
+git clone git@github.com:aiformankind/crowdsourcing-text-msg.git && gut cgecjiyt dev && cd crowdsourcing-text-msg
 ```
 
 - This repository needs Python 3.6 and up to run
@@ -20,8 +20,3 @@ https://docs.python.org/3.6/library/venv.html
 ```.bash
 pip3 install -r requirements.txt
 ```
-
-
-
-
-
