@@ -1,6 +1,6 @@
 # crowdsourcing-text-msg
 
-###How to start
+#How to start
 
 - Clone this repository by running the following command (copy and paste the command to your Terminal)
 ```bash
@@ -20,3 +20,5 @@ https://docs.python.org/3.6/library/venv.html
 ```.bash
 pip3 install -r requirements.txt
 ```
+
+##Note: We will use the dev branch as a development branch.
