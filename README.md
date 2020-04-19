@@ -4,7 +4,7 @@
 
 - Clone this repository by running the following command (copy and paste the command to your Terminal)
 ```bash
-git clone https://github.com/aiformankind/crowdsourcing-text-msg.git && git checkout dev && cd crowdsourcing-text-msg
+git clone https://github.com/aiformankind/crowdsourcing-text-msg.git && cd crowdsourcing-text-msg && git checkout dev
 ```
 or
 ```bash

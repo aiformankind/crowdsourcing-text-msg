@@ -20,7 +20,7 @@ def get_connection(path=None):
     return connection
 
 
-def exeute_query(sql_cmd):
+def execute_query(sql_cmd):
     conn = get_connection()
     this_cursor = conn.cursor()
     result_set = None
@@ -28,6 +28,7 @@ def exeute_query(sql_cmd):
         this_cursor.execute(sql_cmd)
         conn.commit()
         logging.info("The SQL command runs successfully")
+        print("success")
         result_set = this_cursor.fetchall()
         return result_set
     except Error as err:
@@ -38,3 +39,9 @@ def drop_message_table():
 
 def create_message_table():
     exeute_query(DDL.create_message_table)
+
+def drop_processed_table():
+    exeute_query(DDL.drop_processed_table)
+
+def create_processed_table():
+    exeute_query(DDL.create_processed_table)

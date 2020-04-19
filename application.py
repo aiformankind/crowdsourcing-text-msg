@@ -6,14 +6,18 @@ from flask import Flask, request
 from github import Github
 from pytz import timezone
 from twilio.twiml.messaging_response import MessagingResponse
-from src.sqlite_helper import exeute_query
+
+import pyap
+from src.sqlite_helper import execute_query
+from geopy.geocoders import Nominatim
+import folium
 
 
 PROJECT_DESC = """
 ### Wait Time Now
 Wait Time Now is not responsible for the accuracy of this crowdsourced data and assumes no responsibility for any errors or omissions. The User assumes the entire risk associated with the use of this crowdsourced data.   
 """
-REPOSITORY_NAME = 'aiformankind/wait-time'
+REPOSITORY_NAME = 'aiformankind/messaging_dev_test'
 READEME_PAGE = 'wait_time.md'
 REPLY_MESSAGE = 'Thank you for sharing the infos.'
 
@@ -24,12 +28,17 @@ app = Flask(__name__)
 def hello():
     return "Welcome to Wait Time Now"
 
+@app.route("/map", methods=['GET', 'POST'])
+def map():
+    start_coords = (46.9540700, 142.7360300)
+    folium_map = folium.Map(location=start_coords, zoom_start=14)
+    return folium_map._repr_html_()
 
 @app.route("/sms", methods=['GET', 'POST'])
 def sms_reply():
     """Process incoming msg"""
     body = request.values.get('Body', None)
-    json_output = body
+    json_output_original = body
 
     now = datetime.now(tz=pytz.utc)
 
@@ -37,7 +46,7 @@ def sms_reply():
 
     dt_string = date.strftime("%Y/%m/%d %H:%M:%S %Z")
 
-    json_output += " submitted at " + dt_string
+    json_output = json_output_original + " submitted at " + dt_string
 
     # TODOS
     # zipcode to parse zipcode eg. wholefood 20 mins 91456, 94577 wholefood  10 mins call google map api, robust parsing/handling
@@ -54,8 +63,29 @@ def sms_reply():
     original_contents = original_contents.split("\n")[3:]
     original_contents = '\n'.join([str(elem) for elem in original_contents])
 
-    sql_cmd = f"INSERT INTO message VALUES ({original_contents})"
-    exeute_query(sql_cmd)
+
+    sql_cmd = "INSERT INTO message VALUES ('{}')".format(json_output)
+    execute_query(sql_cmd)
+
+    #print(json_output_original.upper())
+    addresses = pyap.parse(json_output_original.upper(), country='US')
+
+    #print(len(addresses))
+
+    if(len(addresses) > 0):
+        parsed_address = addresses[0].as_dict()['full_address']
+        #print(parsed_address)
+        geolocator = Nominatim(user_agent="crowdsourcing")
+        location = geolocator.geocode(parsed_address)
+        if location is not None:
+            #insert into DB processed table
+            sql_insert_cmd = "INSERT INTO processed(address, latitude, longitude, message) VALUES('{}','{}','{}','{}')".format(parsed_address,
+                                                                                                                       location.latitude,
+                                                                                                                       location.longitude,
+                                                                                                                       json_output)
+
+            execute_query(sql_insert_cmd)
+
 
     updated_content = PROJECT_DESC + "\n\n\n" + "#### " + json_output + "\n\n" + original_contents
 
