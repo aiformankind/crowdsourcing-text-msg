@@ -6,7 +6,7 @@ from flask import Flask, request
 from github import Github
 from pytz import timezone
 from twilio.twiml.messaging_response import MessagingResponse
-ç
+from src.sqlite_helper import exeute_query
 
 
 PROJECT_DESC = """
